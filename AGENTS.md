@@ -1,5 +1,9 @@
 ## Agent skills
 
+### Contributing
+
+Follow `CONTRIBUTING.md` for branches, Conventional Commits, and the dev setup. Work on a feature branch, never directly on `main`.
+
 ### Issue tracker
 
 Local markdown in `.scratch/<feature-slug>/`. See `docs/agents/issue-tracker.md`.
