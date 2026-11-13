@@ -19,17 +19,17 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 REPORT = ROOT / "docs" / "testing.md"
 
 MANUAL = {
-    "story:1": "Container packaging and VM setup are done by hand. See docs/vm-setup.md.",
-    "story:2": "Management IP is set during VM setup. Check with the steps in docs/vm-setup.md.",
-    "story:3": "No IP on mirrored networks is set during VM setup. Check with the steps in docs/vm-setup.md.",
-    "story:4": "Forwarding is turned off during VM setup. Check with the steps in docs/vm-setup.md.",
-    "story:5": "Per-network macvlan attachment is set during VM setup. Check with docs/vm-setup.md.",
-    "story:6": "Management-network address is set during VM setup. Check with docs/vm-setup.md.",
+    "story:1": "Container packaging and VM setup are done by hand. See deploy/vm-setup.md.",
+    "story:2": "Management IP is set during VM setup. Check with the steps in deploy/vm-setup.md.",
+    "story:3": "No IP on mirrored networks is set during VM setup. Check with the steps in deploy/vm-setup.md.",
+    "story:4": "Forwarding is turned off during VM setup. Check with the steps in deploy/vm-setup.md.",
+    "story:5": "Per-network macvlan attachment is set during VM setup. Check with deploy/vm-setup.md.",
+    "story:6": "Management-network address is set during VM setup. Check with deploy/vm-setup.md.",
     "story:30": "Restart behavior comes from the Compose restart policy. Check by restarting the container after setup.",
     "story:31": "Start on boot comes from Docker starting on boot. Check by rebooting the VM after setup.",
-    "story:32": "Reproducibility is the guide itself. Check by following docs/vm-setup.md on a fresh VM.",
-    "story:33": "VLAN mapping is checked by scripts/check-vlans.sh before the container starts.",
-    "story:34": "A missing VLAN is reported by scripts/check-vlans.sh before the container starts.",
+    "story:32": "Reproducibility is the guide itself. Check by following deploy/vm-setup.md on a fresh VM.",
+    "story:33": "VLAN mapping is checked by deploy/check-vlans.sh before the container starts.",
+    "story:34": "A missing VLAN is reported by deploy/check-vlans.sh before the container starts.",
     "story:35": "Design review, not a test.",
     "story:36": "Design property, not a test.",
 }
