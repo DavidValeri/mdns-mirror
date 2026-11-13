@@ -1,0 +1,23 @@
+table inet mdns_lockdown {
+	chain input {
+		type filter hook input priority filter; policy drop;
+		iif "lo" accept
+		ct state established,related accept
+		udp dport 5353 accept
+		ip protocol igmp accept
+		icmpv6 type { nd-router-advert, nd-neighbor-solicit, nd-neighbor-advert, mld-listener-query, mld-listener-report, mld-listener-done, mld2-listener-report } accept
+	}
+
+	chain output {
+		type filter hook output priority filter; policy drop;
+		oif "lo" accept
+		ct state established,related accept
+		udp dport 5353 accept
+		ip protocol igmp accept
+		icmpv6 type { nd-router-solicit, nd-neighbor-solicit, nd-neighbor-advert, mld-listener-query, mld-listener-report, mld-listener-done, mld2-listener-report } accept
+	}
+
+	chain forward {
+		type filter hook forward priority filter; policy drop;
+	}
+}

@@ -1,0 +1,29 @@
+[project]
+name = "mdns-mirror"
+version = "0.1.0"
+requires-python = ">=3.11"
+dependencies = ["pyyaml"]
+
+[project.optional-dependencies]
+dev = ["pytest"]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+markers = ["covers(*ids): spec story or ADR IDs this test verifies, such as story:17 or adr:0004"]
+
+[tool.ruff.lint]
+select = ["D"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["D"]
