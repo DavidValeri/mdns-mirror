@@ -2,7 +2,7 @@
 
 ### Contributing
 
-Follow `CONTRIBUTING.md` for branches, Conventional Commits, and the dev setup. Work on a feature branch, never directly on `main`.
+Follow `CONTRIBUTING.md` for branches, Conventional Commits, and the dev setup. Work on a feature branch, never directly on `main`. Open pull requests with `gh pr create --base main` from the feature branch, using a Conventional Commits title. Never run `gh pr merge` without explicit approval from the user.
 
 ### Issue tracker
 

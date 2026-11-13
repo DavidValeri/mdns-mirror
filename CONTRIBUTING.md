@@ -9,6 +9,7 @@ Requirements:
 
 - Python 3.11 or newer
 - Docker, for the full test suite
+- GitHub CLI (`gh`), optional, for opening pull requests from the terminal
 
 Create a virtual environment and install the package with its dev
 dependencies:
@@ -112,6 +113,18 @@ docs(deploy): move VM setup guide
 Open a pull request from your feature branch into `main`. The PR is merged
 with **squash merge**, so the PR title becomes the commit message on `main`.
 Write the PR title in the same Conventional Commits format as the commits.
+
+The easiest way is the GitHub CLI, which needs to be installed and signed in
+once:
+
+```sh
+brew install gh
+gh auth login
+gh pr create --base main --title "<type>(<scope>): <description>" --body "<summary>"
+```
+
+Without `gh`, push the branch and open the PR from the link git prints, or
+from the GitHub web interface.
 
 ## One-time repository setup
 
