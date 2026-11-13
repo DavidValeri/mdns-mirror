@@ -127,7 +127,7 @@ The `command` lists the container's interface names after the rules path. Docker
 Before starting, confirm the VLAN interfaces exist on the VM. Run this from the repository on the VM, with the VLAN interface names from step 1:
 
 ```sh
-scripts/check-vlans.sh enp3s0.10 enp3s0.20 enp3s0.30
+deploy/check-vlans.sh enp3s0.10 enp3s0.20 enp3s0.30
 ```
 
 If any are reported missing, fix the netplan file and run `sudo netplan apply` before continuing.

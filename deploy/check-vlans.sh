@@ -4,7 +4,7 @@
 # Run this on the VM before starting the container. It exits nonzero and
 # names any interface that is missing.
 #
-# Usage: scripts/check-vlans.sh enp3s0.10 enp3s0.20 enp3s0.30
+# Usage: deploy/check-vlans.sh enp3s0.10 enp3s0.20 enp3s0.30
 
 if [ "$#" -eq 0 ]; then
   echo "usage: $0 INTERFACE [INTERFACE ...]" >&2
