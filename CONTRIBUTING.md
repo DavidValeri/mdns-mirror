@@ -16,7 +16,12 @@ dependencies:
 ```sh
 python3 -m venv .venv
 .venv/bin/pip install -e ".[dev]"
+.venv/bin/pre-commit install --hook-type pre-commit --hook-type commit-msg
 ```
+
+The `pre-commit install` step is required once per clone. It installs the
+git hooks that check commit messages and block direct commits to `main`.
+Run `.venv/bin/pre-commit run --all-files` to check the whole repo.
 
 Run the unit tests and the linter:
 
