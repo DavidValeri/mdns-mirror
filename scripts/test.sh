@@ -10,7 +10,7 @@ cd "$(dirname "$0")/.."
 docker run --rm --privileged -v "$PWD":/app -w /app python:3.13-slim bash -c "
   apt-get update -qq >/dev/null 2>&1 &&
   apt-get install -y -qq iproute2 nftables avahi-daemon >/dev/null 2>&1 &&
-  pip install -q pyyaml pytest ruff &&
+  pip install -q '.[dev]' &&
   ruff check src tests &&
   python -m pytest -q \"\$@\" &&
   python scripts/check_coverage.py
