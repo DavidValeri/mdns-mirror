@@ -77,7 +77,7 @@ The shipped image contains only the runtime. Tests run from outside it. Local de
 - The sweep selection rule is tested with fixture version lists and fixture manifest graphs. Cases covered: an untagged child of a release tag is kept, a failed candidate's children are deleted, an orphan older than 24 hours is deleted, an orphan younger than 24 hours is kept, and a manifest read failure deletes nothing.
 - Prior art for the tests is the existing namespace tests in `tests/`, which already run in a privileged container, and the fixture-driven unit tests in `tests/`.
 - The release and sweep workflows are validated by running them: a dry-run sweep on the real package, and a release from a pre-release tag before any stable tag.
-- Stories in this spec are not checked by `scripts/check_coverage.py`, which reads only the MDNS mirror spec. Verification of these stories is by the tests and workflow runs above.
+- Stories in this spec are checked by `scripts/check_coverage.py` like the MDNS mirror spec. Stories with no pytest check are listed as manual in that script, with a reason.
 
 ## Out of Scope
 

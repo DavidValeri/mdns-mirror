@@ -77,7 +77,7 @@ def _send_multicast(ns, src, payload):
 
 @netns_only
 @pytest.mark.parametrize("payload", [ADVERTISEMENT, QUERY], ids=["advertisement", "query"])
-@pytest.mark.covers("story:18", "story:39", "story:40")
+@pytest.mark.covers("mdns-mirror:story:18", "mdns-mirror:story:39", "mdns-mirror:story:40")
 def test_message_reaches_only_the_allowed_network(three_networks, tmp_path, payload):
     rules = tmp_path / "rules.yaml"
     rules.write_text(
@@ -124,7 +124,7 @@ TCP_LISTEN = (
 
 @netns_only
 @pytest.mark.parametrize("lockdown", [False, True])
-@pytest.mark.covers("story:23", "story:41", "adr:0001")
+@pytest.mark.covers("mdns-mirror:story:23", "mdns-mirror:story:41", "adr:0001")
 def test_unicast_tcp_is_not_mirrored_under_lockdown(three_networks, lockdown):
     _route_through_relay()
     if lockdown:
@@ -157,7 +157,7 @@ QU_QUERIER = (
 
 @netns_only
 @pytest.mark.parametrize("reply_allowed", [True, False])
-@pytest.mark.covers("story:16", "story:17", "adr:0004")
+@pytest.mark.covers("mdns-mirror:story:16", "mdns-mirror:story:17", "adr:0004")
 def test_qu_query_gets_its_unicast_reply_back_to_the_querier(three_networks, tmp_path, reply_allowed):
     rules = tmp_path / "rules.yaml"
     reverse = "  - action: allow\n    source: rb\n    output: ra\n" if reply_allowed else ""
@@ -201,7 +201,7 @@ QU_QUERIER_WITH_ID = (
 
 
 @netns_only
-@pytest.mark.covers("story:17", "adr:0004")
+@pytest.mark.covers("mdns-mirror:story:17", "adr:0004")
 def test_qu_query_reply_is_restored_to_the_querier_id_and_relayed_with_another(three_networks, tmp_path):
     rules = tmp_path / "rules.yaml"
     rules.write_text(
@@ -240,7 +240,7 @@ LOOP_COUNTER = (
 
 
 @netns_only
-@pytest.mark.covers("story:21", "story:22", "story:42")
+@pytest.mark.covers("mdns-mirror:story:21", "mdns-mirror:story:22", "mdns-mirror:story:42")
 def test_mirrored_message_is_not_mirrored_back_in_a_loop(three_networks, tmp_path):
     rules = tmp_path / "rules.yaml"
     rules.write_text(
@@ -288,7 +288,7 @@ LEGACY_QUERIER = (
 
 @netns_only
 @pytest.mark.parametrize("reply_allowed", [True, False])
-@pytest.mark.covers("story:46", "story:47", "story:48", "adr:0003")
+@pytest.mark.covers("mdns-mirror:story:46", "mdns-mirror:story:47", "mdns-mirror:story:48", "adr:0003")
 def test_legacy_query_gets_its_reply_back_with_the_original_id(three_networks, tmp_path, reply_allowed):
     reverse = "  - action: allow\n    source: rb\n    output: ra\n" if reply_allowed else ""
     rules = tmp_path / "rules.yaml"
@@ -334,7 +334,7 @@ LEGACY_RESPONDER_REPORTING = (
 
 
 @netns_only
-@pytest.mark.covers("story:46", "adr:0003")
+@pytest.mark.covers("mdns-mirror:story:46", "adr:0003")
 def test_legacy_reply_after_the_two_second_window_is_not_sent(three_networks, tmp_path):
     rules = tmp_path / "rules.yaml"
     rules.write_text("rules:\n  - action: allow\n    source: ra\n    output: rb\n  - action: allow\n    source: rb\n    output: ra\n")
@@ -358,7 +358,7 @@ def test_legacy_reply_after_the_two_second_window_is_not_sent(three_networks, tm
 
 
 @netns_only
-@pytest.mark.covers("story:47", "adr:0003")
+@pytest.mark.covers("mdns-mirror:story:47", "adr:0003")
 def test_legacy_query_with_answer_records_is_not_relayed(three_networks, tmp_path):
     rules = tmp_path / "rules.yaml"
     rules.write_text("rules:\n  - action: allow\n    source: ra\n    output: rb\n")
@@ -428,7 +428,7 @@ def avahi_responder(three_networks, tmp_path):
 
 
 @netns_only
-@pytest.mark.covers("story:44", "story:49", "adr:0002")
+@pytest.mark.covers("mdns-mirror:story:44", "mdns-mirror:story:49", "adr:0002")
 def test_avahi_multicast_answer_is_relayed_without_link_local_records(three_networks, tmp_path, avahi_responder):
     from mdns_mirror.packet import strip_link_local
 
@@ -455,7 +455,7 @@ def test_avahi_multicast_answer_is_relayed_without_link_local_records(three_netw
 
 
 @netns_only
-@pytest.mark.covers("story:48", "story:49", "adr:0003")
+@pytest.mark.covers("mdns-mirror:story:48", "mdns-mirror:story:49", "adr:0003")
 def test_avahi_legacy_answer_comes_back_with_the_original_id(three_networks, tmp_path, avahi_responder):
     rules = tmp_path / "rules.yaml"
     rules.write_text(

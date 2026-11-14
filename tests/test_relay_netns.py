@@ -18,28 +18,28 @@ QU_QUERY_PTR = QUERY_PTR[:-2] + b"\x80\x01"
 ADVERTISEMENT = b"\x00\x00\x84\x00\x00\x00\x00\x01\x00\x00\x00\x00"
 
 
-@pytest.mark.covers("story:13")
+@pytest.mark.covers("mdns-mirror:story:13")
 def test_query_is_classified_as_query():
     assert classify(QUERY_PTR) == ("query", False)
 
 
-@pytest.mark.covers("story:17")
+@pytest.mark.covers("mdns-mirror:story:17")
 def test_qu_bit_in_question_marks_query_as_qu():
     assert classify(QU_QUERY_PTR) == ("query", True)
 
 
-@pytest.mark.covers("story:11")
+@pytest.mark.covers("mdns-mirror:story:11")
 def test_response_is_classified_as_advertisement():
     assert classify(ADVERTISEMENT) == ("advertisement", False)
 
 
-@pytest.mark.covers("story:24")
+@pytest.mark.covers("mdns-mirror:story:24")
 def test_short_packet_is_rejected():
     with pytest.raises(ValueError):
         classify(b"\x00\x01")
 
 
-@pytest.mark.covers("story:24")
+@pytest.mark.covers("mdns-mirror:story:24")
 def test_compressed_question_name_is_skipped():
     packet = (
         b"\x00\x00\x00\x00\x00\x02\x00\x00\x00\x00\x00\x00"
@@ -133,7 +133,7 @@ def _run_relay(tmp_path, action):
 @netns_only
 @pytest.mark.parametrize("family", ["v4", "v6"])
 @pytest.mark.parametrize("action", ["allow", "deny"])
-@pytest.mark.covers("story:11", "story:12", "story:43")
+@pytest.mark.covers("mdns-mirror:story:11", "mdns-mirror:story:12", "mdns-mirror:story:43")
 def test_advertisement_is_relayed_only_when_allowed(mirror_topology, tmp_path, family, action):
     listener_code, sender_code = CASES[family]
     relay = _run_relay(tmp_path, action)
@@ -156,7 +156,7 @@ def test_advertisement_is_relayed_only_when_allowed(mirror_topology, tmp_path, f
 
 
 @netns_only
-@pytest.mark.covers("story:44", "adr:0002")
+@pytest.mark.covers("mdns-mirror:story:44", "adr:0002")
 def test_link_local_records_are_stripped_and_global_records_kept(mirror_topology, tmp_path):
     def name(labels):
         return b"".join(bytes([len(label)]) + label for label in labels) + b"\0"
@@ -192,7 +192,7 @@ def test_link_local_records_are_stripped_and_global_records_kept(mirror_topology
 
 
 @netns_only
-@pytest.mark.covers("story:45")
+@pytest.mark.covers("mdns-mirror:story:45")
 def test_relayed_packets_keep_source_port_5353(mirror_topology, tmp_path):
     listener_code = (
         "import socket;s=socket.socket(socket.AF_INET,socket.SOCK_DGRAM);"
@@ -234,7 +234,7 @@ def _route_through_relay():
 
 @netns_only
 @pytest.mark.parametrize("lockdown", [False, True])
-@pytest.mark.covers("story:24", "story:25", "adr:0001")
+@pytest.mark.covers("mdns-mirror:story:24", "mdns-mirror:story:25", "adr:0001")
 def test_non_mdns_traffic_is_forwarded_only_without_lockdown(mirror_topology, lockdown):
     _route_through_relay()
     if lockdown:
@@ -253,7 +253,7 @@ def test_non_mdns_traffic_is_forwarded_only_without_lockdown(mirror_topology, lo
 
 
 @netns_only
-@pytest.mark.covers("story:25")
+@pytest.mark.covers("mdns-mirror:story:25")
 def test_advertisement_is_still_relayed_under_lockdown(mirror_topology, tmp_path):
     _in_ns("ns-relay", "nft", "-f", FIREWALL)
     listener_code, sender_code = CASES["v4"]

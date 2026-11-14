@@ -33,7 +33,7 @@ def test_reply_for_a_different_relay_id_is_not_sent():
     assert answer_targets(pending, "iot", other, now=101.0, outputs={"personal"}) == []
 
 
-@pytest.mark.covers("adr:0004", "story:17")
+@pytest.mark.covers("adr:0004", "mdns-mirror:story:17")
 def test_reply_is_not_sent_when_its_rule_denies_the_output():
     pending = {}
     remember_query(pending, RELAY_ID, QUERY_ID, "personal", "192.168.10.50", {"iot"}, now=100.0)
