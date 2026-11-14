@@ -47,7 +47,7 @@ Linux container, so it works on macOS. Docker must be running. The Avahi
 interop tests need `avahi-daemon`, which the script installs in the
 container. They are skipped where it is not installed.
 
-The test tools (`pytest`, `ruff`, and `pyyaml`) are pinned to exact versions
+The test tools (`pytest`, `ruff`, `pyyaml`, and `pre-commit`) are pinned to exact versions
 in the `dev` extra in `pyproject.toml`. Local runs and the test script both
 install from that extra. To bump a pin, edit `pyproject.toml`, reinstall with
 `.venv/bin/pip install -e ".[dev]"`, and run `scripts/test.sh` before committing.
