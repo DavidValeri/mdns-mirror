@@ -50,13 +50,13 @@ jobs:
     needs: validate
     uses: ./.github/workflows/ci.yml
 
-  image:
+  release:
     needs: [validate, test]
     runs-on: ubuntu-latest
     timeout-minutes: 45
     environment: release
     permissions:
-      contents: read
+      contents: write
       packages: write
       id-token: write
       attestations: write
@@ -112,14 +112,6 @@ jobs:
           subject-digest: ${{ steps.build.outputs.digest }}
           push-to-registry: true
 
-  release:
-    needs: [validate, test, image]
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-    environment: release
-    permissions:
-      contents: write
-    steps:
       - name: Create GitHub Release
         env:
           GH_TOKEN: ${{ github.token }}
