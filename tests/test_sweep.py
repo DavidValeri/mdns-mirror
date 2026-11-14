@@ -200,3 +200,8 @@ def test_failed_manifest_read_reports_the_registry_error(monkeypatch, capsys):
     err = capsys.readouterr().err
     assert digest in err
     assert "denied: insufficient scope" in err
+
+
+@pytest.mark.covers("release-pipeline:story:24")
+def test_image_reference_is_lowercase_for_mixed_case_owner():
+    assert sweep.image_name("DavidValeri") == "ghcr.io/davidvaleri/mdns-mirror"
