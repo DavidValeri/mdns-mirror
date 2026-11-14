@@ -31,14 +31,15 @@ def select_deletions(versions, keep, now, complete, min_age=MIN_AGE):
     eligible = [
         v
         for v in versions
-        if not _is_released(v)
+        if not is_released(v)
         and v["digest"] not in keep
         and now - v["created_at"] >= min_age
     ]
     return _parents_first(eligible)
 
 
-def _is_released(version):
+def is_released(version):
+    """Return True if the version carries any tag other than candidate-*."""
     return any(not tag.startswith("candidate-") for tag in version["tags"])
 
 
