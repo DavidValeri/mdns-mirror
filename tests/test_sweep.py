@@ -186,3 +186,17 @@ def test_summary_lists_each_version_with_status_and_reason():
     summary = render_summary(rows, dry_run=True)
     assert "dry run, nothing deleted" in summary
     assert "| `sha256:orphan` | (untagged) | 72h | would delete |" in summary
+
+
+@pytest.mark.covers("release-pipeline:story:24")
+def test_failed_manifest_read_reports_the_registry_error(monkeypatch, capsys):
+    def failing_run(*args, **kwargs):
+        raise sweep.subprocess.CalledProcessError(1, args[0], stderr="denied: insufficient scope")
+
+    monkeypatch.setattr(sweep.subprocess, "run", failing_run)
+    digest = "sha256:" + "a" * 64
+    with pytest.raises(sweep.subprocess.CalledProcessError):
+        sweep.fetch_manifest("ghcr.io/owner/mdns-mirror", digest)
+    err = capsys.readouterr().err
+    assert digest in err
+    assert "denied: insufficient scope" in err

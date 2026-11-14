@@ -213,12 +213,21 @@ def delete_version(owner, token, version_id):
 
 
 def fetch_manifest(image, digest):
-    """Return the raw manifest for a digest, read through docker buildx."""
-    out = subprocess.run(
-        ["docker", "buildx", "imagetools", "inspect", "--raw", f"{image}@{digest}"],
-        check=True,
-        capture_output=True,
-    ).stdout
+    """Return the raw manifest for a digest, read through docker buildx.
+
+    On failure, the registry's error text is printed to stderr before the
+    error is raised, so the cause shows in the job log.
+    """
+    try:
+        out = subprocess.run(
+            ["docker", "buildx", "imagetools", "inspect", "--raw", f"{image}@{digest}"],
+            check=True,
+            capture_output=True,
+            text=True,
+        ).stdout
+    except subprocess.CalledProcessError as error:
+        print(f"manifest read failed for {digest}: {error.stderr.strip()}", file=sys.stderr)
+        raise
     return json.loads(out)
 
 
