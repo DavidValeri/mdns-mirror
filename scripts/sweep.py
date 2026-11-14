@@ -246,12 +246,17 @@ def _api(method, url, token):
     return json.loads(body) if body else None
 
 
+def image_name(owner):
+    """Return the GHCR image name for the owner. GHCR requires lowercase names."""
+    return f"ghcr.io/{owner.lower()}/{PACKAGE}"
+
+
 def main():
     """Run the sweep. Set DRY_RUN, OWNER, GITHUB_TOKEN, and GITHUB_STEP_SUMMARY."""
     dry_run = os.environ.get("DRY_RUN", "true") == "true"
     owner = os.environ["OWNER"]
     token = os.environ["GITHUB_TOKEN"]
-    image = f"ghcr.io/{owner}/{PACKAGE}"
+    image = image_name(owner)
 
     records = parse_versions(list_versions(owner, token))
     cache = {}
