@@ -167,6 +167,9 @@ docs(deploy): move VM setup guide
 
 Open a pull request from your feature branch into `main`. The PR is merged
 with **squash merge**, so the PR title becomes the commit message on `main`.
+
+Update a ticket's status in the same pull request that implements it. Set its
+`Status:` line and check its acceptance criteria there, not in a separate PR.
 Write the PR title in the same Conventional Commits format as the commits.
 
 The easiest way is the GitHub CLI, which needs to be installed and signed in
