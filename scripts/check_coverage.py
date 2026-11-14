@@ -32,6 +32,7 @@ MANUAL = {
     "story:34": "A missing VLAN is reported by deploy/check-vlans.sh before the container starts.",
     "story:35": "Design review, not a test.",
     "story:36": "Design property, not a test.",
+    "adr:0005": "CI release decision, not a pytest test. Verified in the release workflow run: the test and promote steps must show the same candidate digest, and the shipped image must start without test tools.",
 }
 
 

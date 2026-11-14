@@ -6,9 +6,10 @@
 
 **Status:** ready-for-agent
 
-- [ ] The workflow runs on a daily schedule and on manual dispatch
-- [ ] Manual dispatch defaults to dry-run, and nothing is deleted in dry-run
-- [ ] The keep set includes the children of every release-tagged version, followed recursively
-- [ ] Any failure to read a release-tag manifest stops the run with no deletions
-- [ ] The run summary lists each version's digest, tags, age, and whether it is kept or would be deleted
+- [x] The workflow runs on a daily schedule and on manual dispatch
+- [x] Manual dispatch defaults to dry-run
+- [ ] Dry-run deletes nothing, verified by a real dry run
+- [x] The keep set includes the children of every release-tagged version, followed recursively
+- [x] Any failure to read a release-tag manifest stops the run with no deletions
+- [x] The run summary lists each version's digest, tags, age, and whether it is kept or would be deleted
 - [ ] The workflow authenticates with its own token, with package read and write permission
