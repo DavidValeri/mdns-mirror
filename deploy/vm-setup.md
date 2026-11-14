@@ -96,7 +96,7 @@ Create `compose.yaml` next to your rules file. Each network is an external netwo
 ```yaml
 services:
   mdns-mirror:
-    image: ghcr.io/davidvaleri/mdns-mirror:1.0.0
+    image: ghcr.io/davidvaleri/mdns-mirror:latest
     restart: unless-stopped
     cap_add:
       - NET_ADMIN
@@ -132,7 +132,7 @@ deploy/check-vlans.sh enp3s0.10 enp3s0.20 enp3s0.30
 
 If any are reported missing, fix the netplan file and run `sudo netplan apply` before continuing.
 
-The `image` line pins a released version. Each release publishes the image for `linux/amd64` and `linux/arm64`, so the same tag works on x86 and ARM VMs. The available tags are listed on the package page at `github.com/DavidValeri/mdns-mirror/pkgs/container/mdns-mirror`. If the package is private, sign in first with `docker login ghcr.io` using a token that can read packages.
+The `image` line uses `latest`, which points to the newest non-prerelease version. Each release publishes the image for `linux/amd64` and `linux/arm64`, so the same tag works on x86 and ARM VMs. The available tags are listed on the package page at `github.com/DavidValeri/mdns-mirror/pkgs/container/mdns-mirror`. If the package is private, sign in first with `docker login ghcr.io` using a token that can read packages.
 
 Pull the image and start it:
 
@@ -141,7 +141,7 @@ docker compose pull
 docker compose up -d
 ```
 
-To upgrade, change the tag in `compose.yaml` to the new version, then run `docker compose pull` and `docker compose up -d` again. Do not use `latest` on the VM, so that each restart runs a version you chose.
+To update, run `docker compose pull` and then `docker compose up -d`. The container restarts on the newest release. To stay on a specific version instead, replace `latest` with a version tag such as `1.2.0`.
 
 ## 6. Verify
 
