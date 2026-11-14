@@ -13,7 +13,8 @@ image=${1:-mdns-mirror:dev}
 [ $# -gt 0 ] && shift
 
 docker run --rm \
-  --cap-add NET_ADMIN --cap-add SYS_ADMIN --security-opt systempaths=unconfined \
+  --cap-add NET_ADMIN --cap-add SYS_ADMIN \
+  --security-opt systempaths=unconfined --security-opt apparmor=unconfined \
   -v "$PWD":/app -w /app \
   --entrypoint sh "$image" -c "
   apt-get update -qq &&

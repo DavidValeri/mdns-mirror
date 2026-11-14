@@ -4,10 +4,10 @@
 
 **Blocked by:** 03
 
-**Status:** ready-for-agent
+**Status:** done
 
-- [ ] The CI image job builds the amd64 image and loads it locally for testing
-- [ ] The smoke test runs against that image and fails the job on any failed check
-- [ ] The full suite runs against that image and fails the job on any failure
-- [ ] The arm64 build remains build-only
-- [ ] A failing smoke check or failing test fails the pull request check
+- [x] The CI image job builds the amd64 image and loads it locally for testing
+- [x] The smoke test runs against that image and fails the job on any failed check
+- [x] The full suite runs against that image and fails the job on any failure
+- [x] The arm64 build remains build-only
+- [x] A failing smoke check or failing test fails the pull request check

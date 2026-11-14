@@ -69,9 +69,9 @@ itself is not changed. Docker must be running. The container overrides the
 image's entrypoint, since the real one starts the relay and needs rule
 arguments. The suite runs its own code, not the entrypoint. Pass a different
 image name as the first argument to test another tag. Anything after the image
-name goes to pytest. Namespace tests need `NET_ADMIN`, `SYS_ADMIN`, and
-unmasked `/proc` paths, which the script grants instead of running the
-container as fully privileged.
+name goes to pytest. Namespace tests need `NET_ADMIN`, `SYS_ADMIN`, unmasked
+`/proc` paths, and no AppArmor profile, which the script grants instead of
+running the container as fully privileged.
 
 The run writes to the repository through the bind mount: it regenerates
 `docs/testing.md` and creates `build/` and `*.egg-info` in the checkout. These
