@@ -15,7 +15,7 @@ build-backend = "setuptools.build_meta"
 where = ["src"]
 
 [tool.pytest.ini_options]
-pythonpath = ["src"]
+pythonpath = ["src", "scripts"]
 testpaths = ["tests"]
 markers = ["covers(*ids): spec story or ADR IDs this test verifies, such as story:17 or adr:0004"]
 
