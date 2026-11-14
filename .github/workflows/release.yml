@@ -165,7 +165,7 @@ jobs:
           api="/users/$OWNER/packages/container/mdns-mirror/versions"
           ids=$(gh api --paginate "$api" \
             | jq -r --arg tag "$CANDIDATE_TAG" \
-              '.[] | select(.metadata.container.tags | index($tag)) | .id')
+              '.[] | select((.metadata.container.tags | sort) == [$tag]) | .id')
           if [[ -z "$ids" ]]; then
             echo "No candidate version tagged $CANDIDATE_TAG; nothing to delete"
             exit 0
