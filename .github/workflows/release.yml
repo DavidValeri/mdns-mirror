@@ -114,12 +114,6 @@ jobs:
           sh scripts/smoke-test.sh "$IMAGE"
           sh scripts/test-image.sh "$IMAGE"
 
-      - name: Forced failure for cleanup test
-        if: github.ref_name == 'v0.1.0-alpha.4'
-        run: |
-          echo "Forced failure to exercise candidate cleanup"
-          exit 1
-
       - name: Promote candidate to release tags
         id: promote
         env:
