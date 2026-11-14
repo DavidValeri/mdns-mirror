@@ -50,6 +50,15 @@ container. They are skipped where it is not installed.
 The coverage check fails if a spec story or ADR has no covering test, and
 it regenerates `docs/testing.md`. Do not edit `docs/testing.md` by hand.
 
+## Agent skills
+
+The engineering skills for agent-assisted work are committed under
+`.agents/skills/`. They come from `mattpocock/skills`, and their versions are
+recorded in `skills-lock.json`. No install step is needed after cloning.
+
+To update them, run `npx skills@latest update`, review the changes, and commit
+the result.
+
 ## Branches
 
 All changes go through a feature branch and a pull request. Do not commit
