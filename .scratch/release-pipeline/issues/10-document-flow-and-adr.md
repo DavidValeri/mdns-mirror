@@ -4,10 +4,10 @@
 
 **Blocked by:** 05, 06, 08
 
-**Status:** ready-for-agent
+**Status:** done
 
-- [ ] `CONTRIBUTING.md` describes the release flow: candidate, test, promote, cleanup
-- [ ] `CONTRIBUTING.md` describes the sweep: schedule, dry-run default, and what it keeps
-- [ ] A new ADR records the decision to test and promote the same digest and to keep test tools out of the shipped image
-- [ ] The ADR has a manual entry in the coverage check with a reason
-- [ ] The coverage check passes with the new ADR
+- [x] `CONTRIBUTING.md` describes the release flow: candidate, test, promote, cleanup
+- [x] `CONTRIBUTING.md` describes the sweep: schedule, dry-run default, and what it keeps
+- [x] A new ADR records the decision to test and promote the same digest and to keep test tools out of the shipped image
+- [x] The ADR has a manual entry in the coverage check with a reason
+- [x] The coverage check passes with the new ADR

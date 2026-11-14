@@ -213,10 +213,26 @@ The release workflow in `.github/workflows/release.yml` then:
 
 1. Checks that the tag is valid SemVer and that the commit is reachable from `main`.
 2. Runs the test suite.
-3. Builds the container image for `linux/amd64` and `linux/arm64`, pushes it to `ghcr.io/davidvaleri/mdns-mirror` with the version tag, and attests its build provenance and SBOM. Releases also get the `X.Y` and `latest` tags. Pre-releases get only their version tag.
-4. Creates a GitHub Release with generated notes. Pre-releases are marked as pre-releases.
+3. Waits for approval in the `release` environment. The environment needs a required reviewer. Approve the run in the Actions tab after checking it.
+4. Builds the container image for `linux/amd64` and `linux/arm64` and pushes it to `ghcr.io/davidvaleri/mdns-mirror` as a candidate tag, `candidate-<commit SHA>`.
+5. Runs the smoke test and the full test suite against the candidate's digest.
+6. Promotes that same digest to the version tag. Releases also get the `X.Y` and `latest` tags. Pre-releases get only their version tag. No image is rebuilt, so the released bytes are the tested bytes.
+7. Attests the promoted digest's build provenance and SBOM, then creates a GitHub Release with generated notes. Pre-releases are marked as pre-releases.
 
-The image and the GitHub Release run in one job, and that job waits for approval in the `release` environment. Approve the run in the Actions tab after checking it.
+If the release fails before promotion, the cleanup step deletes the candidate version. The candidate tag stays on released versions, since deleting a tag deletes its version.
+
+The image's test tools are not in the shipped image. The tests run from outside it. See `docs/adr/0005-test-and-promote-same-digest.md`.
+
+## Scheduled sweep
+
+`.github/workflows/sweep.yml` runs `scripts/sweep.py` every day, and it can also be started by hand from the Actions tab. It cleans up candidate images that a failed or interrupted release left behind.
+
+- The scheduled run is a dry run until ticket 09 is done. It reports what it would delete and deletes nothing.
+- Manual runs default to dry run. Uncheck `dry_run` to delete.
+- The sweep keeps anything reachable from a release tag, including the platform and attestation manifests under it. If any manifest cannot be read, it deletes nothing.
+- It only deletes untagged versions older than 24 hours. Younger versions are kept, so a release in progress is not touched.
+
+Each run writes a table of every version, with its digest, tags, age, and whether it was kept or deleted, to the run summary.
 
 ## One-time repository setup
 
