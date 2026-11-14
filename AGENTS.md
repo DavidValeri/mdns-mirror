@@ -14,7 +14,7 @@ Single-context: `GLOSSARY.md` and `docs/adr/` at the repo root. See `docs/agents
 
 ### Test coverage
 
-- Every test that verifies a spec story or ADR carries `@pytest.mark.covers("story:N", "adr:NNNN")`. Use module-level `pytestmark` when a whole file covers the same requirements.
+- Every test that verifies a spec story or ADR carries `@pytest.mark.covers("<spec>:story:N", "adr:NNNN")`, where `<spec>` is the spec's folder name under `.scratch/` (for example `mdns-mirror:story:17` or `release-pipeline:story:16`). Every test must carry a covers marker. Use module-level `pytestmark` when a whole file covers the same requirements.
 - Every story and ADR needs at least one covering test, or a reason in `MANUAL` in `scripts/check_coverage.py` if it is checked by hand.
 - `scripts/check_coverage.py` runs at the end of `scripts/test.sh` and fails on gaps, unknown IDs, or stale manual entries. It also regenerates `docs/testing.md`, which is generated and must not be edited by hand.
 - Story and ADR numbers are never renumbered, since the markers depend on them.

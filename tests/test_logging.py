@@ -5,7 +5,7 @@ import pytest
 from mdns_mirror.relay import log_decisions
 from mdns_mirror.rules import Message
 
-pytestmark = pytest.mark.covers("story:28")
+pytestmark = pytest.mark.covers("mdns-mirror:story:28")
 
 NETWORKS = ["personal", "iot", "nas"]
 
@@ -21,7 +21,7 @@ def test_each_output_gets_one_decision_line(caplog):
     ]
 
 
-@pytest.mark.covers("story:29")
+@pytest.mark.covers("mdns-mirror:story:29")
 def test_decision_lines_are_debug_so_they_stay_quiet_by_default(caplog):
     message = Message("personal", "query", "192.168.10.50", addressed_to_group=False)
     with caplog.at_level(logging.INFO, logger="mdns_mirror"):

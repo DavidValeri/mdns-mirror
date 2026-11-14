@@ -5,7 +5,7 @@ import pytest
 
 from mdns_mirror.packet import TYPE_A, TYPE_AAAA, TYPE_PTR, classify, strip_link_local
 
-pytestmark = pytest.mark.covers("story:44", "adr:0002")
+pytestmark = pytest.mark.covers("mdns-mirror:story:44", "adr:0002")
 
 SERVICE = [b"_http", b"_tcp", b"local"]
 GLOBAL_V6 = socket.inet_pton(socket.AF_INET6, "2001:db8::1")

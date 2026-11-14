@@ -32,6 +32,7 @@ def fetcher(manifests, fail=()):
     return fetch
 
 
+@pytest.mark.covers("release-pipeline:story:24")
 def test_parse_versions_reads_digest_tags_and_age():
     records = parse_versions([api_item(7, "sha256:a", tags=["1.2.0", "latest"], created=YOUNG)])
     assert records == [
@@ -45,19 +46,23 @@ def test_parse_versions_reads_digest_tags_and_age():
     ]
 
 
+@pytest.mark.covers("release-pipeline:story:24")
 def test_parse_versions_handles_untagged_versions():
     records = parse_versions([api_item(1, "sha256:b")])
     assert records[0]["tags"] == []
 
 
+@pytest.mark.covers("release-pipeline:story:18")
 def test_children_of_reads_manifest_list_entries():
     assert children_of(index("sha256:x", "sha256:y")) == ["sha256:x", "sha256:y"]
 
 
+@pytest.mark.covers("release-pipeline:story:18")
 def test_children_of_image_manifest_is_empty():
     assert children_of({"layers": [{"digest": "sha256:layer"}]}) == []
 
 
+@pytest.mark.covers("release-pipeline:story:17")
 def test_keep_set_follows_nested_indexes():
     manifests = {
         "sha256:top": index("sha256:mid", "sha256:attest"),
@@ -70,6 +75,7 @@ def test_keep_set_follows_nested_indexes():
     assert keep == {"sha256:top", "sha256:mid", "sha256:attest", "sha256:amd64"}
 
 
+@pytest.mark.covers("release-pipeline:story:20")
 def test_keep_set_is_incomplete_when_a_release_manifest_fails():
     manifests = {"sha256:top": index("sha256:amd64"), "sha256:amd64": {}}
     keep, complete = build_keep_set(["sha256:top", "sha256:gone"], fetcher(manifests))
@@ -77,6 +83,7 @@ def test_keep_set_is_incomplete_when_a_release_manifest_fails():
     assert keep == set()
 
 
+@pytest.mark.covers("release-pipeline:story:20")
 def test_keep_set_is_incomplete_when_a_child_fetch_fails():
     manifests = {"sha256:top": index("sha256:amd64"), "sha256:amd64": {}}
     keep, complete = build_keep_set(["sha256:top"], fetcher(manifests, fail={"sha256:amd64"}))
@@ -84,12 +91,14 @@ def test_keep_set_is_incomplete_when_a_child_fetch_fails():
     assert keep == set()
 
 
+@pytest.mark.covers("release-pipeline:story:17")
 def test_keep_set_with_no_release_tags_is_empty_and_complete():
     keep, complete = build_keep_set([], fetcher({}))
     assert complete
     assert keep == set()
 
 
+@pytest.mark.covers("release-pipeline:story:20")
 def test_failed_fetch_leaves_every_version_kept_and_deletes_nothing():
     records = parse_versions([api_item(1, "sha256:orphan")])
     keep, complete = build_keep_set(["sha256:gone"], fetcher({}))
@@ -98,6 +107,7 @@ def test_failed_fetch_leaves_every_version_kept_and_deletes_nothing():
     assert "nothing deleted" in rows[0]["reason"]
 
 
+@pytest.mark.covers("release-pipeline:story:16", "release-pipeline:story:24")
 def test_dry_run_selection_reports_would_delete_and_candidate_children():
     manifests = {
         "sha256:rel": index("sha256:relamd64"),
@@ -134,12 +144,14 @@ def test_dry_run_selection_reports_would_delete_and_candidate_children():
     ("dry_run", "status"),
     [(True, "would delete"), (False, "deleted")],
 )
+@pytest.mark.covers("release-pipeline:story:24")
 def test_status_reflects_dry_run(dry_run, status):
     records = parse_versions([api_item(1, "sha256:orphan")])
     rows = build_rows(records, set(), True, NOW, {1}, dry_run=dry_run)
     assert rows[0]["status"] == status
 
 
+@pytest.mark.covers("release-pipeline:story:20")
 def test_fill_children_reports_unreadable_manifest_as_incomplete():
     records = parse_versions([api_item(1, "sha256:top"), api_item(2, "sha256:bad")])
     fetch = fetcher({"sha256:top": index("sha256:amd64")}, fail={"sha256:bad"})
@@ -148,6 +160,7 @@ def test_fill_children_reports_unreadable_manifest_as_incomplete():
     assert records[0]["children"] == ["sha256:amd64"]
 
 
+@pytest.mark.covers("release-pipeline:story:20")
 def test_unreadable_child_manifest_makes_run_incomplete_and_deletes_nothing():
     records = parse_versions([api_item(1, "sha256:cand", tags=["candidate-abc"], created=OLD)])
     complete = fill_children(records, fetcher({}))
@@ -158,6 +171,7 @@ def test_unreadable_child_manifest_makes_run_incomplete_and_deletes_nothing():
     assert "nothing deleted" in rows[0]["reason"]
 
 
+@pytest.mark.covers("release-pipeline:story:24")
 def test_dry_run_reason_states_the_age_limit_in_use(monkeypatch):
     monkeypatch.setattr(sweep, "MIN_AGE", timedelta(hours=2))
     records = parse_versions([api_item(1, "sha256:orphan")])
@@ -165,6 +179,7 @@ def test_dry_run_reason_states_the_age_limit_in_use(monkeypatch):
     assert "older than 2 hours" in rows[0]["reason"]
 
 
+@pytest.mark.covers("release-pipeline:story:24", "release-pipeline:story:25")
 def test_summary_lists_each_version_with_status_and_reason():
     records = parse_versions([api_item(1, "sha256:orphan")])
     rows = build_rows(records, set(), True, NOW, {1}, dry_run=True)
