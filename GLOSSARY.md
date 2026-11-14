@@ -69,3 +69,13 @@ _Avoid_: Default-allow, fallback
 **Reflection loop**:
 A mirrored message that re-enters a network the mirror is watching and gets mirrored again, endlessly.
 _Avoid_: Echo, storm
+
+## Releases
+
+**Release tag**:
+A SemVer git tag (`vX.Y.Z`) on a commit reachable from `main`. Pushing one starts a Release.
+_Avoid_: Version tag on a branch, build tag
+
+**Release**:
+The GitHub Release created from a Release tag, with generated notes.
+_Avoid_: Build, publish
