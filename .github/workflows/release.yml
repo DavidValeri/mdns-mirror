@@ -154,7 +154,6 @@ jobs:
       - name: Delete candidate if release did not promote
         if: >-
           always() &&
-          steps.build.outcome == 'success' &&
           steps.promote.outcome != 'success'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
