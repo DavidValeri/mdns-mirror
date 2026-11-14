@@ -77,5 +77,5 @@ A SemVer git tag (`vX.Y.Z`) on a commit reachable from `main`. Pushing one start
 _Avoid_: Version tag on a branch, build tag
 
 **Release**:
-The GitHub Release created from a Release tag, with the built artifacts and generated notes.
+The GitHub Release created from a Release tag, with generated notes.
 _Avoid_: Build, publish
