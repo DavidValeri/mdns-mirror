@@ -56,6 +56,25 @@ committing.
 The coverage check fails if a spec story or ADR has no covering test, and
 it regenerates `docs/testing.md`. Do not edit `docs/testing.md` by hand.
 
+## Building and smoke-testing the image
+
+To build the runtime image for your machine and run the smoke test against it:
+
+```sh
+scripts/build-image.sh
+```
+
+The image is tagged `mdns-mirror:dev`. The smoke test checks that the image
+has its packaged files, that it stays running with a valid rules file and its
+firewall loaded, and that it exits non-zero with an invalid rules file. It
+needs Docker and Linux networking, so it runs in the Docker VM on macOS.
+
+To run only the smoke test against an existing image:
+
+```sh
+scripts/smoke-test.sh mdns-mirror:dev
+```
+
 ## Agent skills
 
 The engineering skills for agent-assisted work are committed under
