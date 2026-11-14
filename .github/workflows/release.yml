@@ -115,6 +115,7 @@ jobs:
           sh scripts/test-image.sh "$IMAGE"
 
       - name: Promote candidate to release tags
+        id: promote
         env:
           IMAGE: ${{ env.IMAGE_NAME }}@${{ steps.build.outputs.digest }}
           TAGS: ${{ steps.meta.outputs.tags }}
@@ -149,3 +150,27 @@ jobs:
             --generate-notes \
             --verify-tag \
             "${args[@]}"
+
+      - name: Delete candidate if release did not promote
+        if: >-
+          always() &&
+          steps.build.outcome == 'success' &&
+          steps.promote.outcome != 'success'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          OWNER: ${{ github.repository_owner }}
+          CANDIDATE_TAG: candidate-${{ github.sha }}
+        run: |
+          set -euo pipefail
+          api="/users/$OWNER/packages/container/mdns-mirror/versions"
+          ids=$(gh api --paginate "$api" \
+            | jq -r --arg tag "$CANDIDATE_TAG" \
+              '.[] | select(.metadata.container.tags | index($tag)) | .id')
+          if [[ -z "$ids" ]]; then
+            echo "No candidate version tagged $CANDIDATE_TAG; nothing to delete"
+            exit 0
+          fi
+          while IFS= read -r id; do
+            echo "Deleting candidate version $id ($CANDIDATE_TAG)"
+            gh api --method DELETE "$api/$id"
+          done <<< "$ids"
