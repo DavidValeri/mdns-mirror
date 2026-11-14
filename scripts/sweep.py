@@ -49,17 +49,20 @@ def children_of(manifest):
 
 
 def fill_children(records, fetch):
-    """Set each record's children from its manifest, when it can be read.
+    """Set each record's children from its manifest.
 
-    Unreadable manifests leave children empty. That is safe because the
-    keep set, not the children, decides what is protected.
+    Returns:
+        True if every manifest was read. False if any read failed. A failed
+        read leaves that record's children empty, and the caller must then
+        delete nothing, since the children are needed to protect versions.
     """
+    complete = True
     for record in records:
         try:
             record["children"] = children_of(fetch(record["digest"]))
         except Exception:
-            pass
-    return records
+            complete = False
+    return complete
 
 
 def build_keep_set(released_digests, fetch):
@@ -108,7 +111,7 @@ def decide(record, keep, complete, now):
     if record["digest"] in keep:
         return "child of a release tag"
     if now - record["created_at"] < MIN_AGE:
-        return "younger than 24 hours"
+        return f"younger than {_hours_text(MIN_AGE)}"
     return None
 
 
@@ -133,7 +136,7 @@ def build_rows(records, keep, complete, now, selected_ids, dry_run):
             status = "kept"
         elif record["id"] in selected_ids:
             status = "would delete" if dry_run else "deleted"
-            reason = "not referenced by a release tag, older than 24 hours"
+            reason = f"no release tag or kept child, older than {_hours_text(MIN_AGE)}"
         else:
             status = "kept"
             reason = "not selected"
@@ -181,6 +184,10 @@ def _parse_time(value):
 def _age(delta):
     hours = int(delta.total_seconds() // 3600)
     return f"{hours}h"
+
+
+def _hours_text(delta):
+    return f"{int(delta.total_seconds() // 3600)} hours"
 
 
 def list_versions(owner, token):
@@ -248,7 +255,7 @@ def main():
     released = [r["digest"] for r in records if is_released(r)]
     keep, complete = build_keep_set(released, fetch)
 
-    fill_children(records, fetch)
+    complete = fill_children(records, fetch) and complete
 
     now = datetime.now(timezone.utc)
     selected = select_deletions(records, keep, now, complete)

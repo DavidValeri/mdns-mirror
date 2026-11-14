@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta, timezone
 
 import pytest
+import sweep
 from sweep import build_keep_set, build_rows, children_of, fill_children, parse_versions, render_summary
 from sweep_selection import select_deletions
 
@@ -137,6 +138,31 @@ def test_status_reflects_dry_run(dry_run, status):
     records = parse_versions([api_item(1, "sha256:orphan")])
     rows = build_rows(records, set(), True, NOW, {1}, dry_run=dry_run)
     assert rows[0]["status"] == status
+
+
+def test_fill_children_reports_unreadable_manifest_as_incomplete():
+    records = parse_versions([api_item(1, "sha256:top"), api_item(2, "sha256:bad")])
+    fetch = fetcher({"sha256:top": index("sha256:amd64")}, fail={"sha256:bad"})
+    complete = fill_children(records, fetch)
+    assert not complete
+    assert records[0]["children"] == ["sha256:amd64"]
+
+
+def test_unreadable_child_manifest_makes_run_incomplete_and_deletes_nothing():
+    records = parse_versions([api_item(1, "sha256:cand", tags=["candidate-abc"], created=OLD)])
+    complete = fill_children(records, fetcher({}))
+    selected = select_deletions(records, set(), NOW, complete)
+    rows = build_rows(records, set(), complete, NOW, {1}, dry_run=False)
+    assert selected == []
+    assert rows[0]["status"] == "kept"
+    assert "nothing deleted" in rows[0]["reason"]
+
+
+def test_dry_run_reason_states_the_age_limit_in_use(monkeypatch):
+    monkeypatch.setattr(sweep, "MIN_AGE", timedelta(hours=2))
+    records = parse_versions([api_item(1, "sha256:orphan")])
+    rows = build_rows(records, set(), True, NOW, {1}, dry_run=True)
+    assert "older than 2 hours" in rows[0]["reason"]
 
 
 def test_summary_lists_each_version_with_status_and_reason():
