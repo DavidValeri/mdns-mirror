@@ -12,4 +12,4 @@
 - [ ] Stable releases also get `X.Y` and `latest` on the same digest
 - [ ] Pre-releases get only their version tag, never `latest`
 - [ ] Attestation and SBOM apply to the promoted digest
-- [ ] Promotion is the last registry write in the release job
+- [ ] Promotion is the last tag change in the release job

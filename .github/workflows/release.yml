@@ -91,19 +91,40 @@ jobs:
             type=semver,pattern={{major}}.{{minor}},enable=${{ needs.validate.outputs.prerelease == 'false' }}
             type=raw,value=latest,enable=${{ needs.validate.outputs.prerelease == 'false' }}
 
-      - name: Build and push image (amd64, arm64)
+      - name: Build and push candidate image (amd64, arm64)
         id: build
         uses: docker/build-push-action@10e90e3645eae34f1e60eeb005ba3a3d33f178e8 # v6
         with:
           context: .
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
+          tags: ${{ env.IMAGE_NAME }}:candidate-${{ github.sha }}
           labels: ${{ steps.meta.outputs.labels }}
           provenance: mode=max
           sbom: true
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+      - name: Test candidate image
+        env:
+          IMAGE: ${{ env.IMAGE_NAME }}@${{ steps.build.outputs.digest }}
+        run: |
+          set -euo pipefail
+          docker pull "$IMAGE"
+          sh scripts/smoke-test.sh "$IMAGE"
+          sh scripts/test-image.sh "$IMAGE"
+
+      - name: Promote candidate to release tags
+        env:
+          IMAGE: ${{ env.IMAGE_NAME }}@${{ steps.build.outputs.digest }}
+          TAGS: ${{ steps.meta.outputs.tags }}
+        run: |
+          set -euo pipefail
+          args=()
+          while IFS= read -r tag; do
+            args+=(--tag "$tag")
+          done <<< "$TAGS"
+          docker buildx imagetools create "${args[@]}" "$IMAGE"
 
       - name: Attest image provenance
         uses: actions/attest-build-provenance@e8998f949152b193b063cb0ec769d69d929409be # v2
