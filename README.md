@@ -28,7 +28,9 @@ rules:
 ```
 
 Run it with Docker Compose. [deploy/vm-setup.md](deploy/vm-setup.md) has the
-full Compose file and the VM setup steps.
+full Compose file and the VM setup steps. The released image is published to
+`ghcr.io/davidvaleri/mdns-mirror` for `linux/amd64` and `linux/arm64`, so you
+do not need to build it yourself.
 
 ```sh
 docker compose up -d
@@ -52,13 +54,16 @@ suite, and the branch and commit rules.
 | `docs/` | Architecture decision records and generated test coverage |
 | `scripts/` | Development helpers, such as the test runner |
 | `Dockerfile` | Container image |
+| `.github/` | GitHub Actions workflows (CI and releases) and Dependabot config |
+| `.agents/skills/` | Engineering skills for agent-assisted development |
 | `GLOSSARY.md` | Project terms and their meanings |
 | `.scratch/mdns-mirror/` | The spec and implementation tickets |
 
 ## Documentation
 
 - [VM setup](deploy/vm-setup.md): network layout, Compose file, and verification steps
-- [Contributing](CONTRIBUTING.md): dev setup, tests, and the branch and commit rules
+- [Contributing](CONTRIBUTING.md): dev setup, tests, the branch and commit rules, and releases
+- [Releases](CONTRIBUTING.md#releases): how to tag a release and where the image is published
 - [Architecture decisions](docs/adr/): why the design is the way it is
 - [Glossary](GLOSSARY.md): definitions of network, mirror, advertisement, query, and rule
 - [Spec](.scratch/mdns-mirror/spec.md): user stories and implementation decisions
