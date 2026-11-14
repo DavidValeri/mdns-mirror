@@ -111,7 +111,7 @@ def decide(record, keep, complete, now):
     if record["digest"] in keep:
         return "child of a release tag"
     if now - record["created_at"] < MIN_AGE:
-        return "younger than 24 hours"
+        return f"younger than {_hours_text(MIN_AGE)}"
     return None
 
 
@@ -136,7 +136,7 @@ def build_rows(records, keep, complete, now, selected_ids, dry_run):
             status = "kept"
         elif record["id"] in selected_ids:
             status = "would delete" if dry_run else "deleted"
-            reason = "not referenced by a release tag, older than 24 hours"
+            reason = f"no release tag or kept child, older than {_hours_text(MIN_AGE)}"
         else:
             status = "kept"
             reason = "not selected"
@@ -184,6 +184,10 @@ def _parse_time(value):
 def _age(delta):
     hours = int(delta.total_seconds() // 3600)
     return f"{hours}h"
+
+
+def _hours_text(delta):
+    return f"{int(delta.total_seconds() // 3600)} hours"
 
 
 def list_versions(owner, token):
