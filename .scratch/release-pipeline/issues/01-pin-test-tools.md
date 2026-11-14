@@ -4,9 +4,9 @@
 
 **Blocked by:** None (can start immediately)
 
-**Status:** ready-for-agent
+**Status:** done
 
-- [ ] `pytest`, `ruff`, and `pyyaml` are pinned to exact versions in the dev dependency group
-- [ ] The test script installs its tools from the dev dependency group, not unpinned names
-- [ ] Running the test script locally passes with the pinned versions
-- [ ] `CONTRIBUTING.md` says where the pins live and what to run after bumping one
+- [x] `pytest`, `ruff`, and `pyyaml` are pinned to exact versions in the dev dependency group
+- [x] The test script installs its tools from the dev dependency group, not unpinned names
+- [x] Running the test script locally passes with the pinned versions
+- [x] `CONTRIBUTING.md` says where the pins live and what to run after bumping one
