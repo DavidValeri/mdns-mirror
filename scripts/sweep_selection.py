@@ -51,5 +51,6 @@ def _parents_first(versions):
         if not roots:
             roots = remaining
         ordered.extend(roots)
-        remaining = [v for v in remaining if v not in roots]
+        root_ids = {id(v) for v in roots}
+        remaining = [v for v in remaining if id(v) not in root_ids]
     return ordered
