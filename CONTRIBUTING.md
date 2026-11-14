@@ -126,6 +126,40 @@ gh pr create --base main --title "<type>(<scope>): <description>" --body "<summa
 Without `gh`, push the branch and open the PR from the link git prints, or
 from the GitHub web interface.
 
+## Continuous integration
+
+Every pull request into `main` runs two checks in GitHub Actions:
+
+- The full test suite, through `scripts/test.sh`.
+- A build of the container image for `linux/amd64` and `linux/arm64`. The image is built but not pushed.
+
+Both must pass before a PR is merged. The workflow is in `.github/workflows/ci.yml`.
+
+## Releases
+
+A release is started by pushing a tag. Tags must be SemVer with a `v` prefix:
+
+- `vX.Y.Z` for a release, such as `v1.2.0`.
+- `vX.Y.Z-alpha.N`, `vX.Y.Z-beta.N`, or `vX.Y.Z-rc.N` for a pre-release, such as `v1.2.0-rc.1`.
+
+Tag the commit on `main` after the change is merged:
+
+```sh
+git switch main
+git pull
+git tag v1.2.0
+git push origin v1.2.0
+```
+
+The release workflow in `.github/workflows/release.yml` then:
+
+1. Checks that the tag is valid SemVer and that the commit is reachable from `main`.
+2. Runs the test suite.
+3. Builds the container image for `linux/amd64` and `linux/arm64`, pushes it to `ghcr.io/davidvaleri/mdns-mirror` with the version tag, and attests its build provenance and SBOM. Releases also get the `X.Y` and `latest` tags. Pre-releases get only their version tag.
+4. Creates a GitHub Release with generated notes. Pre-releases are marked as pre-releases.
+
+The image and the GitHub Release run in one job, and that job waits for approval in the `release` environment. Approve the run in the Actions tab after checking it.
+
 ## One-time repository setup
 
 These steps are done once by the repository owner. They are not needed for
@@ -146,3 +180,7 @@ Then, on GitHub:
    - Block deletions.
 2. Open **Settings > General** and, under **Pull Requests**, allow only
    **Squash merging**.
+3. Open **Settings > Environments**, create an environment named `release`, and add yourself as a required reviewer.
+4. Open **Settings > Rules > Rulesets**, create a tag ruleset for `v*`, and restrict tag creation to repository admins.
+5. After the first image is pushed, open the package at `github.com/DavidValeri/mdns-mirror/pkgs/container/mdns-mirror` and set its visibility to public, if you want anyone to pull it without signing in.
+
