@@ -4,11 +4,11 @@
 
 **Blocked by:** None (can start immediately)
 
-**Status:** ready-for-agent
+**Status:** done
 
-- [ ] An untagged child of a release tag is kept
-- [ ] Children of a failed candidate are returned for deletion
-- [ ] An orphan older than 24 hours is returned for deletion
-- [ ] An orphan younger than 24 hours is kept
-- [ ] Missing manifest data for any release tag returns no deletions
-- [ ] Indexes are ordered before their children in the result
+- [x] An untagged child of a release tag is kept
+- [x] Children of a failed candidate are returned for deletion
+- [x] An orphan older than 24 hours is returned for deletion
+- [x] An orphan younger than 24 hours is kept
+- [x] Missing manifest data for any release tag returns no deletions
+- [x] Indexes are ordered before their children in the result
