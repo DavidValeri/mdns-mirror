@@ -4,11 +4,11 @@
 
 **Blocked by:** 07
 
-**Status:** done
+**Status:** ready-for-agent
 
 - [x] The workflow runs on a daily schedule and on manual dispatch
 - [ ] Manual dispatch defaults to dry-run, and nothing is deleted in dry-run
 - [x] The keep set includes the children of every release-tagged version, followed recursively
 - [x] Any failure to read a release-tag manifest stops the run with no deletions
 - [x] The run summary lists each version's digest, tags, age, and whether it is kept or would be deleted
-- [x] The workflow authenticates with its own token, with package read and write permission
+- [ ] The workflow authenticates with its own token, with package read and write permission
