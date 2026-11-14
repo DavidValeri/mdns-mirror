@@ -49,17 +49,20 @@ def children_of(manifest):
 
 
 def fill_children(records, fetch):
-    """Set each record's children from its manifest, when it can be read.
+    """Set each record's children from its manifest.
 
-    Unreadable manifests leave children empty. That is safe because the
-    keep set, not the children, decides what is protected.
+    Returns:
+        True if every manifest was read. False if any read failed. A failed
+        read leaves that record's children empty, and the caller must then
+        delete nothing, since the children are needed to protect versions.
     """
+    complete = True
     for record in records:
         try:
             record["children"] = children_of(fetch(record["digest"]))
         except Exception:
-            pass
-    return records
+            complete = False
+    return complete
 
 
 def build_keep_set(released_digests, fetch):
@@ -248,7 +251,7 @@ def main():
     released = [r["digest"] for r in records if is_released(r)]
     keep, complete = build_keep_set(released, fetch)
 
-    fill_children(records, fetch)
+    complete = fill_children(records, fetch) and complete
 
     now = datetime.now(timezone.utc)
     selected = select_deletions(records, keep, now, complete)
