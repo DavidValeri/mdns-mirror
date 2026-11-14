@@ -4,10 +4,10 @@
 
 **Blocked by:** 01, 02
 
-**Status:** ready-for-agent
+**Status:** done
 
-- [ ] One command runs the full suite inside the built runtime image
-- [ ] Test tools come from the pinned dev group and are not added to the image
-- [ ] The shipped image contains no test code or test tools after the run
-- [ ] Namespace tests run with the capabilities they need
-- [ ] `CONTRIBUTING.md` documents the command and when to use it
+- [x] One command runs the full suite inside the built runtime image
+- [x] Test tools come from the pinned dev group and are not added to the image
+- [x] The shipped image contains no test code or test tools after the run
+- [x] Namespace tests run with the capabilities they need
+- [x] `CONTRIBUTING.md` documents the command and when to use it
