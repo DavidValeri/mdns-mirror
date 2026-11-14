@@ -4,11 +4,11 @@
 
 **Blocked by:** None (can start immediately)
 
-**Status:** ready-for-agent
+**Status:** done
 
-- [ ] The base image is pinned by digest, and Dependabot is configured to update the pin
-- [ ] One command builds the runtime image for the host architecture
-- [ ] The smoke test passes on a valid rules file: the firewall loads and the process stays up
-- [ ] The smoke test passes on an invalid rules file: the container exits non-zero
-- [ ] The smoke test passes on the entrypoint check: `nft` is present and the entrypoint is executable
-- [ ] `CONTRIBUTING.md` documents the build-and-smoke-test command
+- [x] The base image is pinned by digest, and Dependabot is configured to update the pin
+- [x] One command builds the runtime image for the host architecture
+- [x] The smoke test passes on a valid rules file: the firewall loads and the process stays up
+- [x] The smoke test passes on an invalid rules file: the container exits non-zero
+- [x] The smoke test passes on the entrypoint check: `nft` is present and the entrypoint is executable
+- [x] `CONTRIBUTING.md` documents the build-and-smoke-test command
