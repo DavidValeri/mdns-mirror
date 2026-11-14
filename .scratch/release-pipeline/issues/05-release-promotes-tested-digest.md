@@ -4,12 +4,12 @@
 
 **Blocked by:** 04
 
-**Status:** ready-for-agent
+**Status:** done
 
-- [ ] The release job pushes the built image to a `candidate-<sha>` tag before any tests run
-- [ ] The smoke test and full suite run against the candidate digest, not a rebuild
-- [ ] Promotion adds the version tag to the tested digest
-- [ ] Stable releases also get `X.Y` and `latest` on the same digest
-- [ ] Pre-releases get only their version tag, never `latest`
-- [ ] Attestation and SBOM apply to the promoted digest
-- [ ] Promotion is the last tag change in the release job
+- [x] The release job pushes the built image to a `candidate-<sha>` tag before any tests run
+- [x] The smoke test and full suite run against the candidate digest, not a rebuild
+- [x] Promotion adds the version tag to the tested digest
+- [x] Stable releases also get `X.Y` and `latest` on the same digest
+- [x] Pre-releases get only their version tag, never `latest`
+- [x] Attestation and SBOM apply to the promoted digest
+- [x] Promotion is the last tag change in the release job
